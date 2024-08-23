@@ -1,6 +1,6 @@
 from fastapi import (FastAPI, responses, Request)
 from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
+from .dependencies import templates
 from .middlewares.token import TokenAuthMiddleware, CORSMiddleware
 from .middlewares.ip_bans import IPBanMiddleware
 from .routers.files import files
@@ -8,7 +8,8 @@ from .routers.products import products
 from .settings import (IP_BANED, BASE_DIR, MEDIA_DIR, MEDIA_ENDPOINT, STAICS_DIR, STAICS_ENDPOINT, os, TEMPLATES_DIR)
 from rich.console import Console
 from rich.text import Text
-from .models.users import User, engine, Base
+from .models.users import User
+from .database import engine, Base
 
 console = Console()
 
@@ -46,7 +47,7 @@ app.add_middleware(
     )
 
 app.mount(STAICS_ENDPOINT, StaticFiles(directory=STAICS_DIR), name="static")
-templates = Jinja2Templates(directory=TEMPLATES_DIR)
+app.mount(MEDIA_ENDPOINT, StaticFiles(directory=MEDIA_DIR), name="media")
 
 @app.on_event("startup")
 async def startup_event():

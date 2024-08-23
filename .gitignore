@@ -1,2 +1,7 @@
 .venv/
 node_modules/
+data/
+*.db
+__pycache__/
+*.pyc
+media/

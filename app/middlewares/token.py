@@ -11,6 +11,8 @@ class TokenAuthMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next):
         token = request.headers.get("Authorization")
+        pprint(request)
+        pprint("Headers:")
         pprint(dict(request.headers))
         pprint(f"IP: {request.client.host}")
         pprint(f"Port: {request.client.port}")

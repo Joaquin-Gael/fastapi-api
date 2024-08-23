@@ -1,14 +1,7 @@
 from sqlalchemy import (Column, Integer, String)
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
-from ..settings import (DATA_BASE_URL, BASE_DIR, os, STAICS_ENDPOINT, uuid)
+from ..database import Base, Session
 
-engine = create_engine(DATA_BASE_URL)
-Session = sessionmaker(bind=engine)
-Base = declarative_base()
-
-class CustomBase(Base):
+class CustomUserBase(Base):
     __abstract__ = True
 
     def to_dict(self):
@@ -30,7 +23,7 @@ class CustomBase(Base):
         self.image = f"{upload_dir}/{image_file.filename}"
         return self.image
 
-class User(CustomBase):
+class User(CustomUserBase):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
