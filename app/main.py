@@ -1,9 +1,11 @@
 from fastapi import (FastAPI, responses, Request)
 from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from .middlewares.token import TokenAuthMiddleware, CORSMiddleware
 from .middlewares.ip_bans import IPBanMiddleware
 from .routers.files import files
-from .settings import (IP_BANED, BASE_DIR, MEDIA_DIR, MEDIA_ENDPOINT, STAICS_DIR, STAICS_ENDPOINT, os)
+from .routers.products import products
+from .settings import (IP_BANED, BASE_DIR, MEDIA_DIR, MEDIA_ENDPOINT, STAICS_DIR, STAICS_ENDPOINT, os, TEMPLATES_DIR)
 from rich.console import Console
 from rich.text import Text
 from .models.users import User, engine, Base
@@ -16,7 +18,14 @@ app.include_router(
     prefix="/files",
     tags=["files"],
     responses={404: {"description": "Not found"}},
-    )
+)
+
+app.include_router(
+    products,
+    prefix="/products",
+    tags=["products"],
+    responses={404: {"description": "Not found"}},
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -37,6 +46,7 @@ app.add_middleware(
     )
 
 app.mount(STAICS_ENDPOINT, StaticFiles(directory=STAICS_DIR), name="static")
+templates = Jinja2Templates(directory=TEMPLATES_DIR)
 
 @app.on_event("startup")
 async def startup_event():
@@ -69,5 +79,8 @@ async def startup_event():
     console.print(f"Tablas creadas en la base de datos", style="bold green")
 
 @app.get("/")
-async def root():
-    return {"message": "Hello World"}
+async def root(request:Request):
+    return templates.TemplateResponse(
+        request,
+        name = "base.html",
+    )
