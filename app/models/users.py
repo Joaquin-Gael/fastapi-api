@@ -1,5 +1,6 @@
 from sqlalchemy import (Column, Integer, String)
 from ..database import Base, Session
+from ..settings import (BASE_DIR, os, uuid, MEDIA_ENDPOINT)
 
 class CustomUserBase(Base):
     __abstract__ = True
@@ -9,7 +10,7 @@ class CustomUserBase(Base):
     
     def upload_image(self, image_file, upload_dir="users"):
         path = f"{BASE_DIR}/media/{upload_dir}"
-        endpoint = f"{STAICS_ENDPOINT}/{upload_dir}"
+        endpoint = f"{MEDIA_ENDPOINT}{upload_dir}"
 
         if not os.path.exists(path):
             os.makedirs(path)

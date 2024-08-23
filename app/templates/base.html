@@ -14,9 +14,40 @@
 <body>
 
     <div id="header"></div>
-    
+
     <div class="container my-5">
         <div id="product-cards" class="row"></div>
+    </div>
+    
+    <div class="container my-5">
+        <h2 class="mb-4">Crear Producto</h2>
+        <form action="/products/productos" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="name" class="form-label">Nombre del Producto</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Descripción</label>
+                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="price" class="form-label">Precio</label>
+                <input type="number" class="form-control" id="price" name="price" required>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Imagen del Producto</label>
+                <input class="form-control" type="file" id="image" name="image" accept="image/*">
+            </div>
+            <div class="mb-3">
+                <label for="url_image" class="form-label">URL de la Imagen (Opcional)</label>
+                <input type="url" class="form-control" id="url_image" name="url_image">
+            </div>
+            <div class="mb-3">
+                <label for="url" class="form-label">URL del Producto</label>
+                <input type="url" class="form-control" id="url" name="url">
+            </div>
+            <button type="submit" class="btn btn-primary">Crear Producto</button>
+        </form>
     </div>
     
     <div id="footer"></div>
